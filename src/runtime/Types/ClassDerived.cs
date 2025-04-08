@@ -219,7 +219,12 @@ namespace Python.Runtime
 
             // override any virtual not already overridden by the properties above
             // also override any interface method.
-            var methods = baseType.GetMethods().Concat(interfaces.SelectMany(x => x.GetMethods()));
+            var methods = baseType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                .Concat(interfaces.SelectMany(x => x.GetMethods()))
+                //          "public",     "protected"   "protected internal"
+                .Where(x => x.IsPublic || x.IsFamily || x.IsFamilyOrAssembly)
+                // "Finalize" is overridden explcitly here
+                .Where(x => x.Name != "Finalize");
             var virtualMethods = new HashSet<string>();
             foreach (MethodInfo method in methods)
             {

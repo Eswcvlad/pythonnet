@@ -74,6 +74,25 @@ namespace Python.Test
         }
     }
 
+    public abstract class AbstractClassTest
+    {
+        public abstract string public_foo();
+
+        public string nvi_protected_foo()
+        {
+            return protected_foo();
+        }
+
+        public string nvi_protected_internal_foo()
+        {
+            return protected_internal_foo();
+        }
+
+        protected abstract string protected_foo();
+
+        protected internal abstract string protected_internal_foo();
+    }
+
     public class FunctionsTest
     {
         public static string test_foo(IInterfaceTest x)
@@ -86,6 +105,24 @@ namespace Python.Test
         {
             // calls into python if bar is overriden
             return x.bar(s, i);
+        }
+
+        public static string test_public_foo(AbstractClassTest x)
+        {
+            // calls into python if public_foo is overridden
+            return x.public_foo();
+        }
+
+        public static string test_protected_foo(AbstractClassTest x)
+        {
+            // calls into python if protected_foo is overridden
+            return x.nvi_protected_foo();
+        }
+
+        public static string test_protected_internal_foo(AbstractClassTest x)
+        {
+            // calls into python if protected_internal_foo is overridden
+            return x.nvi_protected_internal_foo();
         }
 
         // test instances can be constructed in managed code

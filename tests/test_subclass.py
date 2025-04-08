@@ -344,3 +344,26 @@ def test_implement_interface_and_class():
         def SayHello(self):
             return "hello"
     obj = DualSubClass0()
+
+def test_abstract_method():
+    from Python.Test import AbstractClassTest
+
+    class Derived(AbstractClassTest):
+        __namespace__ = "test_abstract_method"
+        def public_foo(self):
+            return "public"
+        def protected_foo(self):
+            return "protected"
+        def protected_internal_foo(self):
+            return "protected_internal"
+
+    obj = Derived()
+    assert obj.public_foo() == "public"
+    assert FunctionsTest.test_public_foo(obj) == "public"
+    assert obj.nvi_protected_foo() == "protected"
+    assert obj.protected_foo() == "protected"
+    assert FunctionsTest.test_protected_foo(obj) == "protected"
+    assert obj.nvi_protected_internal_foo() == "protected_internal"
+    assert obj.protected_internal_foo() == "protected_internal"
+    assert FunctionsTest.test_protected_internal_foo(obj) == "protected_internal"
+
